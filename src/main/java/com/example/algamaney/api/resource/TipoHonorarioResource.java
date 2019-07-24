@@ -27,8 +27,8 @@ public class TipoHonorarioResource {
 	@GetMapping("/{codigo}")
 	public ResponseEntity<TipoHonorario> buscarPeloCodigo(@PathVariable Long codigo) {
 		TipoHonorario tipoHonorario = tipoHonorarioRepository.findOne(codigo);
-		System.out.println("qualquer coisa");
-		 return tipoHonorario != null ? ResponseEntity.ok(tipoHonorario) : ResponseEntity.notFound().build();
+		System.out.println("Tlinerzinho coisa linda");
+		return tipoHonorario != null ? ResponseEntity.ok(tipoHonorario) : ResponseEntity.notFound().build();
 	}
 	
 	
