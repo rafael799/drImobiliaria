@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "tipo_honorario")
 public class TipoHonorario {
-	
+	// teste
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
