@@ -27,6 +27,14 @@ public class TipoHonorario {
 	public String getDescricao() {
 		return descricao;
 	}
+	
+	public void setCodigo(Long codigo) {
+		this.codigo = codigo;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
 
 	@Override
 	public int hashCode() {
