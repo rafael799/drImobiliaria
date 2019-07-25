@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "permissao")
-public class Permissao {
+public class Permissao {//
 
 	@Id
 	private Long codigo;
