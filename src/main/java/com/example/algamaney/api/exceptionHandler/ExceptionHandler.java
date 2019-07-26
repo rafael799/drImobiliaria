@@ -46,6 +46,14 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
 	}
 	
+	@org.springframework.web.bind.annotation.ExceptionHandler({ ImovelInexistesteOuInativo.class })
+	public ResponseEntity<Object> handlePessoaInexistenteOuInativaException(ImovelInexistesteOuInativo ex) {
+		String mensagemUsuario = messageSource.getMessage("imovel.inexistente-ou-inativo", null, LocaleContextHolder.getLocale());
+		String mensagemDesenvolvedor = ex.toString();
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
+		return ResponseEntity.badRequest().body(erros);
+	}
+	
 	@org.springframework.web.bind.annotation.ExceptionHandler({ EmptyResultDataAccessException.class })
 	public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex,
 			WebRequest request) {

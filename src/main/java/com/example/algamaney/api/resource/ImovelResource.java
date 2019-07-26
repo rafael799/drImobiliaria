@@ -54,7 +54,7 @@ public class ImovelResource {
 	public ResponseEntity<Imovel>criar(@Valid @RequestBody Imovel imovel, HttpServletResponse response){
 		Imovel imovelSalvo = imovelRepository.save(imovel);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, imovelSalvo.getCodigo()));
-		return ResponseEntity.status(HttpStatus.CREATED).body(imovel);
+		return ResponseEntity.status(HttpStatus.CREATED).body(imovelSalvo);
 	}
 	
 	@DeleteMapping("/{codigo}")

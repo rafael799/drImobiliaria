@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.example.algamaney.api.exceptionHandler.ImovelInexistesteOuInativo;
 import com.example.algamaney.api.model.Imovel;
 import com.example.algamaney.api.model.repository.ImovelRepository;
 
@@ -26,6 +27,17 @@ public class ImovelService {
 			throw new EmptyResultDataAccessException(1);
 		}
 		return imovelsalvo;
+	}
+	
+	public void validarImovel(Imovel imovel) {
+		
+		if (imovel.getCodigo() != null) {
+			imovel = imovelRepository.findOne(imovel.getCodigo());
+		}
+
+		if (imovel == null || imovel.getSituacao().equals(false)) {
+			throw new ImovelInexistesteOuInativo();
+		}
 	}
 
 
