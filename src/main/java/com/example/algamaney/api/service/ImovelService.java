@@ -1,5 +1,6 @@
 package com.example.algamaney.api.service;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,9 @@ public class ImovelService {
 	private ImovelRepository imovelRepository;
 	
 	public Imovel atualizar(Long codigo, Imovel imovel) {
-		buscarImovelExistente(codigo);
-		imovel.setCodigo(codigo);
-
-		return imovelRepository.save(imovel);
+		Imovel imovelSalvo = buscarImovelExistente(codigo);
+		BeanUtils.copyProperties(imovel, imovelSalvo, "codigo");
+		return imovelRepository.save(imovelSalvo);
 	}
 	
 	private Imovel buscarImovelExistente(Long codigo) {

@@ -47,11 +47,9 @@ public class ImovelRepositoryImpl implements ImovelRepositoryQuery {
 					builder.lower(root.get("descricao")), "%" + imovelFilter.getDescricao().toLowerCase() + "%"));
 		}
 		
-		if (!StringUtils.isEmpty(imovelFilter.getLogradouro())) {
-			predicates.add(builder.like(
-					builder.lower(root.get("logradouro")), "%" + imovelFilter.getLogradouro().toLowerCase() + "%"));
+		if(imovelFilter.getSituacao() != null) {
+			predicates.add(builder.equal(root.get("situacao"), imovelFilter.getSituacao()));
 		}
-		
 		
 		return predicates.toArray(new Predicate[predicates.size()]);
 	}

@@ -1,5 +1,6 @@
 package com.example.algamaney.api.service;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,9 @@ public class TipoHonorarioService {
 	private TipoHonorarioRepository tipoHonorarioRepository;
 	
 	public TipoHonorario atualizar(Long codigo, TipoHonorario tipoHonorario) {
-		buscarTipoHonorarioExistente(codigo);
-		tipoHonorario.setCodigo(codigo);
-
-		return tipoHonorarioRepository.save(tipoHonorario);
+		TipoHonorario tipoHonorarioSalva = buscarTipoHonorarioExistente(codigo);
+		BeanUtils.copyProperties(tipoHonorario, tipoHonorarioSalva, "codigo");
+		return tipoHonorarioRepository.save(tipoHonorarioSalva);
 	}
 	
 	private TipoHonorario buscarTipoHonorarioExistente(Long codigo) {
