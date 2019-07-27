@@ -45,6 +45,10 @@ public class Honorario {
 	@ManyToOne
 	@JoinColumn(name = "codigo_tipo_honorario")
 	private TipoHonorario tipoHonorario;
+	
+	@ManyToOne
+	@JoinColumn(name = "codigo_contrato_locacao")
+	private ContratoLocacao contratoLocacao;
 
 	public Long getCodigo() {
 		return codigo;
@@ -101,6 +105,16 @@ public class Honorario {
 	public void setTipoHonorario(TipoHonorario tipoHonorario) {
 		this.tipoHonorario = tipoHonorario;
 	}
+	
+	
+
+	public ContratoLocacao getContratoLocacao() {
+		return contratoLocacao;
+	}
+
+	public void setContratoLocacao(ContratoLocacao contratoLocacao) {
+		this.contratoLocacao = contratoLocacao;
+	}
 
 	@Override
 	public int hashCode() {
@@ -108,6 +122,7 @@ public class Honorario {
 		int result = 1;
 		result = prime * result + ((ano == null) ? 0 : ano.hashCode());
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+		result = prime * result + ((contratoLocacao == null) ? 0 : contratoLocacao.hashCode());
 		result = prime * result + ((dataLancamento == null) ? 0 : dataLancamento.hashCode());
 		result = prime * result + ((mes == null) ? 0 : mes.hashCode());
 		result = prime * result + ((tipoHonorario == null) ? 0 : tipoHonorario.hashCode());
@@ -135,6 +150,11 @@ public class Honorario {
 				return false;
 		} else if (!codigo.equals(other.codigo))
 			return false;
+		if (contratoLocacao == null) {
+			if (other.contratoLocacao != null)
+				return false;
+		} else if (!contratoLocacao.equals(other.contratoLocacao))
+			return false;
 		if (dataLancamento == null) {
 			if (other.dataLancamento != null)
 				return false;
@@ -159,5 +179,7 @@ public class Honorario {
 			return false;
 		return true;
 	}
+
+	
 	
 }

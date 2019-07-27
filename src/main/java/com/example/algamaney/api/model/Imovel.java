@@ -11,6 +11,8 @@ import javax.persistence.Table;
 @Table(name = "imovel")
 public class Imovel {
 	
+	public static boolean ATIVO = true;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;

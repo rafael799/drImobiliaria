@@ -24,7 +24,6 @@ import com.example.algamaney.api.model.ContratoLocacao;
 import com.example.algamaney.api.model.repository.ContratoLocacaoRepository;
 import com.example.algamaney.api.model.repository.filter.ContratoLocacaoFilter;
 import com.example.algamaney.api.service.ContratoLocacaoService;
-import com.example.algamaney.api.service.ImovelService;
 
 @RestController
 @RequestMapping("/contratosLocacao")
@@ -39,10 +38,6 @@ public class ContratoLocacaoResource {
 	@Autowired
 	private ApplicationEventPublisher publisher;
 	
-	@Autowired
-	private ImovelService imovelService;
-	
-	
 	@GetMapping
 	public Page<ContratoLocacao> pesquisar(ContratoLocacaoFilter imovelFilter, Pageable pageable) {
 		return contratoLocacaoRepository.filtrar(imovelFilter, pageable);
@@ -56,7 +51,10 @@ public class ContratoLocacaoResource {
 	
 	@PostMapping
 	public ResponseEntity<ContratoLocacao>criar(@Valid @RequestBody ContratoLocacao contratoLocacao, HttpServletResponse response){
-		imovelService.validarImovel(contratoLocacao.getImovel());
+		
+		contratoLocacaoService.validarVinculo(contratoLocacao);
+		contratoLocacaoService.buscarImovelExistenteEmContrato(contratoLocacao.getImovel().getCodigo());
+		
 		ContratoLocacao contratoLocacaoSalvo = contratoLocacaoRepository.save(contratoLocacao);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, contratoLocacaoSalvo.getCodigo()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(contratoLocacaoSalvo);

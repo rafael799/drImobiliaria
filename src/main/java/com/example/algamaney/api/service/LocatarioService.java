@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.example.algamaney.api.exceptionHandler.LocatarioInexistesteOuInativo;
 import com.example.algamaney.api.model.Locatario;
 import com.example.algamaney.api.model.repository.LocatarioRepository;
 
@@ -25,5 +26,16 @@ public class LocatarioService {
 			throw new EmptyResultDataAccessException(1);
 		}
 		return locatariosalvo;
+	}
+	
+	public void validarLocatario(Locatario locatario) {
+		
+		if (locatario != null && locatario.getCodigo() != null) {
+			locatario = locatarioRepository.findOne(locatario.getCodigo());
+		}
+
+		if (locatario == null || locatario.getSituacao().equals(false)) {
+			throw new LocatarioInexistesteOuInativo();
+		}
 	}
 }

@@ -47,17 +47,17 @@ public class ContratoLocacaoRepositoryImpl implements ContratoLocacaoRepositoryQ
 		
 		if (contratoLocacaoFilter.getValorAluguel() != null) {
 			predicates.add(
-					builder.lessThanOrEqualTo(root.get("valorAluguel"), contratoLocacaoFilter.getValorAluguel()));
+					builder.equal(root.get("valorAluguel"), contratoLocacaoFilter.getValorAluguel()));
 		}
 		
 		if (contratoLocacaoFilter.getDuracaoMeses() != null) {
 			predicates.add(
-					builder.lessThanOrEqualTo(root.get("duracaoMeses"), contratoLocacaoFilter.getDuracaoMeses()));
+					builder.equal(root.get("duracaoMeses"), contratoLocacaoFilter.getDuracaoMeses()));
 		}
 		
 		if (contratoLocacaoFilter.getConsiderarPagamentoHonorario() != null) {
 			predicates.add(
-					builder.lessThanOrEqualTo(root.get("considerarPagamentoHonorario"), contratoLocacaoFilter.getConsiderarPagamentoHonorario()));
+					builder.equal(root.get("considerarPagamentoHonorario"), contratoLocacaoFilter.getConsiderarPagamentoHonorario()));
 		}
 		
 		if(contratoLocacaoFilter.getSituacao() != null) {

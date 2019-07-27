@@ -31,7 +31,7 @@ public class ImovelService {
 	
 	public void validarImovel(Imovel imovel) {
 		
-		if (imovel.getCodigo() != null) {
+		if (imovel != null && imovel.getCodigo() != null) {
 			imovel = imovelRepository.findOne(imovel.getCodigo());
 		}
 

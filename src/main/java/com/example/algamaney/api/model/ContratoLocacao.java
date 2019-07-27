@@ -17,6 +17,8 @@ import javax.validation.constraints.NotNull;
 @Table(name = "contrato_locacao")
 public class ContratoLocacao {
 	
+	public static boolean ATIVO = true;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
@@ -30,7 +32,7 @@ public class ContratoLocacao {
 	private BigDecimal valorAluguel;
 	
 	@NotNull
-	@Column(name = "duracao_mes")
+	@Column(name = "duracao_meses")
 	private Integer duracaoMeses;
 	
 	@NotNull

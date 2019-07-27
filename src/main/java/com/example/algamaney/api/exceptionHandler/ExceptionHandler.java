@@ -53,6 +53,46 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
 		return ResponseEntity.badRequest().body(erros);
 	}
+
+	@org.springframework.web.bind.annotation.ExceptionHandler({ TipoHonorarioInexistente.class })
+	public ResponseEntity<Object> handlePessoaInexistenteOuInativaException(TipoHonorarioInexistente ex) {
+		String mensagemUsuario = messageSource.getMessage("tipo.honorario.inexistente-ou-inativo", null, LocaleContextHolder.getLocale());
+		String mensagemDesenvolvedor = ex.toString();
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
+		return ResponseEntity.badRequest().body(erros);
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler({ ContratoLocacaoInexistente.class })
+	public ResponseEntity<Object> handlePessoaInexistenteOuInativaException(ContratoLocacaoInexistente ex) {
+		String mensagemUsuario = messageSource.getMessage("contrato.locacao.inexistente-ou-inativo", null, LocaleContextHolder.getLocale());
+		String mensagemDesenvolvedor = ex.toString();
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
+		return ResponseEntity.badRequest().body(erros);
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler({ LocadorInexistesteOuInativo.class })
+	public ResponseEntity<Object> handlePessoaInexistenteOuInativaException(LocadorInexistesteOuInativo ex) {
+		String mensagemUsuario = messageSource.getMessage("locador.inexistente-ou-inativo", null, LocaleContextHolder.getLocale());
+		String mensagemDesenvolvedor = ex.toString();
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
+		return ResponseEntity.badRequest().body(erros);
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler({ LocatarioInexistesteOuInativo.class })
+	public ResponseEntity<Object> handlePessoaInexistenteOuInativaException(LocatarioInexistesteOuInativo ex) {
+		String mensagemUsuario = messageSource.getMessage("locatario.inexistente-ou-inativo", null, LocaleContextHolder.getLocale());
+		String mensagemDesenvolvedor = ex.toString();
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
+		return ResponseEntity.badRequest().body(erros);
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler({ ContratoJaPossuiEsteImovel.class })
+	public ResponseEntity<Object> handlePessoaInexistenteOuInativaException(ContratoJaPossuiEsteImovel ex) {
+		String mensagemUsuario = messageSource.getMessage("imovel.existente.em.outro.contrato", null, LocaleContextHolder.getLocale());
+		String mensagemDesenvolvedor = ex.toString();
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
+		return ResponseEntity.badRequest().body(erros);
+	}
 	
 	@org.springframework.web.bind.annotation.ExceptionHandler({ EmptyResultDataAccessException.class })
 	public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex,

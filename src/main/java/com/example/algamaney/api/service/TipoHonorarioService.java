@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.example.algamaney.api.exceptionHandler.TipoHonorarioInexistente;
 import com.example.algamaney.api.model.TipoHonorario;
 import com.example.algamaney.api.model.repository.TipoHonorarioRepository;
 
@@ -26,6 +27,17 @@ public class TipoHonorarioService {
 			throw new EmptyResultDataAccessException(1);
 		}
 		return tipoHonorarioSalvo;
+	}
+	
+	public void validarTipoHonorario(TipoHonorario tipoHonorario) {
+		
+		if (tipoHonorario != null && tipoHonorario.getCodigo() != null) {
+			tipoHonorario = tipoHonorarioRepository.findOne(tipoHonorario.getCodigo());
+		}
+
+		if (tipoHonorario == null) {
+			throw new TipoHonorarioInexistente();
+		}
 	}
 
 

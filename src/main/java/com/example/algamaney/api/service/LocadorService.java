@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.example.algamaney.api.exceptionHandler.LocadorInexistesteOuInativo;
 import com.example.algamaney.api.model.Locador;
 import com.example.algamaney.api.model.repository.LocadorRepository;
 
@@ -27,4 +28,16 @@ public class LocadorService {
 		}
 		return locadorsalvo;
 	}
+	
+	public void validarLocador(Locador locador) {
+		
+		if (locador != null && locador.getCodigo() != null) {
+			locador = locadorRepository.findOne(locador.getCodigo());
+		}
+
+		if (locador == null || locador.getSituacao().equals(false)) {
+			throw new LocadorInexistesteOuInativo();
+		}
+	}
+	
 }
