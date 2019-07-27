@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,17 +42,20 @@ public class HonorarioResource {
 
 	
 	@GetMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_HONORARIO') and #oauth2.hasScope('read')")
 	public ResponseEntity<Honorario> buscarPeloCodigo(@PathVariable Long codigo) {
 		Honorario honorario = honorarioRepository.findOne(codigo);
 		return honorario != null ? ResponseEntity.ok(honorario) : ResponseEntity.notFound().build();
 	}
 	
 	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_HONORARIO') and #oauth2.hasScope('read')")
 	public Page<Honorario> pesquisar(HonorarioFilter locadorFilter, Pageable pageable) {
 		return honorarioRepository.filtrar(locadorFilter, pageable);
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_HONORARIO') and #oauth2.hasScope('read')")
 	public ResponseEntity<Honorario>criar(@Valid @RequestBody Honorario honorario, HttpServletResponse response){
 		honorarioService.validarVinculo(honorario);
 		Honorario honorarioSalvo = honorarioRepository.save(honorario);
@@ -61,11 +65,13 @@ public class HonorarioResource {
 	
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasAuthority('ROLE_REMOVER_HONORARIO') and #oauth2.hasScope('read')")
 	public void remover(@PathVariable Long codigo) {
 		honorarioRepository.delete(codigo);
 	}
 	
 	@PutMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_EDITAR_HONORARIO') and #oauth2.hasScope('read')")
 	public ResponseEntity<Honorario> atualizar(@PathVariable Long codigo, @Valid @RequestBody Honorario honorario) {
 		Honorario honorarioAtualizar = honorarioService.atualizar(codigo, honorario);
 		return ResponseEntity.ok(honorarioAtualizar);

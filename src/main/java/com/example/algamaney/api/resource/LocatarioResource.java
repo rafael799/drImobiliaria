@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,17 +40,20 @@ public class LocatarioResource {
 	private ApplicationEventPublisher publisher;
 	
 	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LOCATARIO') and #oauth2.hasScope('read')")
 	public Page<Locatario> pesquisar(LocatarioFilter locatarioFilter, Pageable pageable) {
 		return locatarioRepository.filtrar(locatarioFilter, pageable);
 	}
 	
 	@GetMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LOCATARIO') and #oauth2.hasScope('read')")
 	public ResponseEntity<Locatario> buscarPeloCodigo(@PathVariable Long codigo) {
 		Locatario locatario = locatarioRepository.findOne(codigo);
 		return locatario != null ? ResponseEntity.ok(locatario) : ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LOCATARIO') and #oauth2.hasScope('read')")
 	public ResponseEntity<Locatario>criar(@Valid @RequestBody Locatario locatario, HttpServletResponse response){
 		Locatario locatarioSalvo = locatarioRepository.save(locatario);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, locatarioSalvo.getCodigo()));
@@ -57,12 +61,14 @@ public class LocatarioResource {
 	}
 	
 	@DeleteMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_REMOVER_LOCATARIO') and #oauth2.hasScope('read')")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long codigo) {
 		locatarioRepository.delete(codigo);
 	}
 	
 	@PutMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_EDITAR_LOCATARIO') and #oauth2.hasScope('read')")
 	public ResponseEntity<Locatario> atualizar(@PathVariable Long codigo, @Valid @RequestBody Locatario locatario) {
 		Locatario locatariolSalvo = locatarioService.atualizar(codigo, locatario);
 		return ResponseEntity.ok(locatariolSalvo);

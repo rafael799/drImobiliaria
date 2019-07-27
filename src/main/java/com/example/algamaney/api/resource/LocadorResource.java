@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,17 +40,20 @@ public class LocadorResource {
 	private ApplicationEventPublisher publisher;
 	
 	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LOCADOR') and #oauth2.hasScope('read')")
 	public Page<Locador> pesquisar(LocadorFilter locadorFilter, Pageable pageable) {
 		return locadorRepository.filtrar(locadorFilter, pageable);
 	}
 	
 	@GetMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LOCADOR') and #oauth2.hasScope('read')")
 	public ResponseEntity<Locador> buscarPeloCodigo(@PathVariable Long codigo) {
 		Locador locador = locadorRepository.findOne(codigo);
 		return locador != null ? ResponseEntity.ok(locador) : ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LOCADOR') and #oauth2.hasScope('read')")
 	public ResponseEntity<Locador>criar(@Valid @RequestBody Locador locador, HttpServletResponse response){
 		Locador locadorSalvo = locadorRepository.save(locador);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, locadorSalvo.getCodigo()));
@@ -58,11 +62,13 @@ public class LocadorResource {
 	
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasAuthority('ROLE_REMOVER_LOCADOR') and #oauth2.hasScope('read')")
 	public void remover(@PathVariable Long codigo) {
 		locadorRepository.delete(codigo);
 	}
 	
 	@PutMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_EDITAR_LOCADOR') and #oauth2.hasScope('read')")
 	public ResponseEntity<Locador> atualizar(@PathVariable Long codigo, @Valid @RequestBody Locador locador) {
 		Locador locadorlSalvo = locadorService.atualizar(codigo, locador);
 		return ResponseEntity.ok(locadorlSalvo);

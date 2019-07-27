@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,17 +40,20 @@ public class ContratoLocacaoResource {
 	private ApplicationEventPublisher publisher;
 	
 	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CONTRATO_LOCACAO') and #oauth2.hasScope('read')")
 	public Page<ContratoLocacao> pesquisar(ContratoLocacaoFilter imovelFilter, Pageable pageable) {
 		return contratoLocacaoRepository.filtrar(imovelFilter, pageable);
 	}
 	
 	@GetMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CONTRATO_LOCACAO') and #oauth2.hasScope('read')")
 	public ResponseEntity<ContratoLocacao> buscarPeloCodigo(@PathVariable Long codigo) {
 		ContratoLocacao contratoLocacao = contratoLocacaoRepository.findOne(codigo);
 		return contratoLocacao != null ? ResponseEntity.ok(contratoLocacao) : ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CONTRATO_LOCACAO') and #oauth2.hasScope('write')")
 	public ResponseEntity<ContratoLocacao>criar(@Valid @RequestBody ContratoLocacao contratoLocacao, HttpServletResponse response){
 		
 		contratoLocacaoService.validarVinculo(contratoLocacao);
@@ -62,11 +66,13 @@ public class ContratoLocacaoResource {
 	
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasAuthority('ROLE_REMOVER_CONTRATO_LOCACAO') and #oauth2.hasScope('write')")
 	public void remover(@PathVariable Long codigo) {
 		contratoLocacaoRepository.delete(codigo);
 	}
 	
 	@PutMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_EDITAR_CONTRATO_LOCACAO') and #oauth2.hasScope('write')")
 	public ResponseEntity<ContratoLocacao> atualizar(@PathVariable Long codigo, @Valid @RequestBody ContratoLocacao contratoLocacao) {
 		ContratoLocacao contratoLocacaoSalvo = contratoLocacaoService.atualizar(codigo, contratoLocacao);
 		return ResponseEntity.ok(contratoLocacaoSalvo);
